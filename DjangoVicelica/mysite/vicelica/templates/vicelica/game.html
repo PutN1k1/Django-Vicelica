@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <title>Виселица</title>
+</head>
+<body>
+    <h1>Игра Виселица</h1>
+
+    {% if not request.session.choice %}
+        <!-- Форма для выбора режима игры -->
+        <h2>Выберите режим игры</h2>
+        <form method="POST">
+            {% csrf_token %}
+            <label for="choice">Выберите режим: standart или premium</label>
+            <input type="text" id="choice" name="choice" maxlength="8" required>
+            <button type="submit">Отправить</button>
+        </form>
+    {% else %}
+        <!-- Информация об игре -->
+        <p>Слово: {{ secret_letters }}</p>
+        <p>Осталось попыток: {{ attempts_left }}</p>
+        <p>{{ message }}</p>
+
+        <!-- Форма для ввода буквы -->
+        <form method="POST">
+            {% csrf_token %}
+            <label for="letter">Введите букву:</label>
+            <input type="text" id="letter" name="letter" maxlength="1" required>
+            <button type="submit">Отправить</button>
+        </form>
+    {% endif %}
+</body>
+</html>
